@@ -1,0 +1,24 @@
+<apex:page standardController="Opportunity" extensions="CreateInvoiceController">
+    <apex:pageMessages />
+    <apex:form >
+        <apex:pageBlock title="Invoice Page">
+            <apex:pageBlockSection title="Invoice Information" columns="1">
+                <apex:outputPanel rendered="{!NOT(ISNULL(invoiceDetails))}">
+                    <apex:dataTable value="{!invoiceDetails}" var="item" border="1" styleClass="slds-table slds-table_bordered">
+                        <apex:column >
+                            <apex:facet name="header">Field Name</apex:facet>
+                            <apex:outputText value="{!item.fieldName}" />
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Field Value</apex:facet>
+                            <apex:outputText value="{!item.fieldValue}" />
+                        </apex:column>
+                    </apex:dataTable>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!ISNULL(invoiceDetails)}">
+                    <apex:outputText value="No invoice details available." />
+                </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
