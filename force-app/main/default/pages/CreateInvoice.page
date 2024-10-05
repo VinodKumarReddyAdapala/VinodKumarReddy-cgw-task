@@ -19,6 +19,13 @@
                     <apex:outputText value="No invoice details available." />
                 </apex:outputPanel>
             </apex:pageBlockSection>
+            
+        <apex:commandButton value="Show JSON" action="{!generateJSON}" />
+
+ 
+        <apex:outputPanel rendered="{!NOT(ISNULL(jsonOutput))}">
+            <apex:outputText value="{!jsonOutput}" escape="false" />
+        </apex:outputPanel>
         </apex:pageBlock>
     </apex:form>
 </apex:page>
