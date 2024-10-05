@@ -1,0 +1,7 @@
+<apex:page controller="JSONDisplayController">
+    <apex:outputText value="{!jsonOutput}" escape="false" />
+    
+    <apex:form >
+        <apex:commandButton value="Proceed to Create Invoice" action="{!createInvoice}" />
+    </apex:form>
+</apex:page>

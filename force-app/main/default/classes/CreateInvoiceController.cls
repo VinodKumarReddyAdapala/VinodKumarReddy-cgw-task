@@ -53,6 +53,10 @@ public class CreateInvoiceController {
 
             if (!fieldsToSelect.isEmpty()) {
                 jsonOutput = generateInvoiceJSON(originRecordId, fieldsToSelect);
+                // Redirect to JSON display page
+                PageReference jsonPage = new PageReference('/apex/DisplayJSONPage?jsonOutput=' + EncodingUtil.urlEncode(jsonOutput, 'UTF-8'));
+                jsonPage.setRedirect(true);
+                return jsonPage;
             } else {
                 jsonOutput = 'Error: No valid fields found in OpportunityLineItem.';
                 ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, jsonOutput));
@@ -93,7 +97,8 @@ public class CreateInvoiceController {
             gen.writeStringField('Type', 'ACCREC'); 
             gen.writeFieldName('Contact');
             gen.writeStartObject();
-            gen.writeStringField('ContactID', '0000000'); 
+            gen.writeStringField('ContactID', '0000000');
+            gen.writeStringField('AccountNumber',getInvoiceFieldValue(ACCOUNT_PARAM));
             gen.writeEndObject();
             String invoiceDate = getInvoiceFieldValue(INVOICE_DATE_PARAM);
             String dueDate = getInvoiceFieldValue(INVOICE_DUE_DATE_PARAM);
@@ -107,7 +112,7 @@ public class CreateInvoiceController {
             if (formattedDueDate != null) {
                 gen.writeDateField('DueDate', formattedDueDate);
             }
-
+            gen.writeStringField('Reference',originRecordId);
             //LineItems field 
             gen.writeFieldName('LineItems');
             gen.writeStartArray();
@@ -127,6 +132,7 @@ public class CreateInvoiceController {
             return 'Error: At least one Line Item is required.';
         }
     }
+    
 
     private String getInvoiceFieldValue(String paramName) {
         return invoiceFieldMap.get(paramName); 
